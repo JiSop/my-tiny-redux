@@ -2,7 +2,7 @@
   "name": "my-tiny-redux",
   "version": "1.0.0",
   "description": "my tiny redux",
-  "main": "index.js",
+  "main": "index.html",
   "author": "JiSop <jisop.shin@gmail.com>",
   "license": "MIT",
   "scripts": {
