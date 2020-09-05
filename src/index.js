@@ -1,4 +1,4 @@
-import { createStore } from "./redux";
+import { createStore, actionCreator } from "./redux";
 
 const INCRE = "incre";
 const RESET = "reset";
@@ -25,13 +25,6 @@ function update() {
 }
 
 store.subscribe(update);
-
-function actionCreator(type, data) {
-  return {
-    ...data,
-    type: type
-  };
-}
 
 function incre() {
   store.dispatch(actionCreator(INCRE));

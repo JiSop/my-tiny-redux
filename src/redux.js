@@ -15,3 +15,10 @@ export function createStore(reducer) {
     subscribe
   };
 }
+
+export function actionCreator(type, data) {
+  return {
+    ...data,
+    type: type
+  };
+}
