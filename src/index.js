@@ -1,43 +1,42 @@
 import { createStore, actionCreator } from "./redux";
 
+const INIT = "init";
 const INCRE = "incre";
-const RESET = "reset";
 
-function reducer(state = {}, action) {
-  if (action.type === INCRE) {
-    return {
-      ...state,
-      count: state.count ? state.count + 1 : 1
-    };
-  } else if (action.type === RESET) {
-    return {
-      ...state,
-      count: 0
-    };
+function reducer(state = {}, { type }) {
+  switch (type) {
+    case INCRE:
+      return {
+        count: state.count + 1
+      };
+    case INIT:
+      return {
+        ...state,
+        count: 0
+      };
+    default:
+      return {
+        ...state
+      };
   }
-  return state;
 }
 
 const store = createStore(reducer);
 
-function update() {
+store.subscribe(() => {
   console.log(store.getState());
-}
-
-store.subscribe(update);
+});
 
 function incre() {
   store.dispatch(actionCreator(INCRE));
 }
 
-function reset() {
-  store.dispatch(actionCreator(RESET, { resetCount: 10 }));
+function init() {
+  store.dispatch(actionCreator(INIT, { resetCount: 10 }));
 }
 
-store.dispatch({ type: "incre" });
-store.dispatch({ type: INCRE });
-store.dispatch(actionCreator(INCRE));
-incre();
-reset();
-
-console.log(store.getState());
+init();
+store.dispatch({ type: "incre" }); // 하드 코딩
+store.dispatch({ type: INCRE }); // 변수 사용
+store.dispatch(actionCreator(INCRE)); // 액션 크리에이터 사용
+incre(); // 액션 함수
