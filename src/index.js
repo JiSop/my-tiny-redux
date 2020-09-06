@@ -1,8 +1,18 @@
-import { createStore, actionCreator } from "./redux";
+import { createStore, createAction } from "./redux";
 
-const INIT = "init";
-const INCRE = "incre";
 
+
+// SECTION : Action Type
+const INIT = 'INIT';
+const INCRE = 'INCRE';
+const DECRE = 'DECRE';
+
+// SECTION : Action Creator
+const initAction = createAction(INIT, ({ count }) => ({ count }));
+const increAction = createAction(INCRE);
+const decreAction = createAction(DECRE);
+
+// SECTION : Reducer
 function reducer(state = {}, { type, payload }) {
   switch (type) {
     case INIT:
@@ -15,6 +25,11 @@ function reducer(state = {}, { type, payload }) {
         ...state,
         count: state.count + 1
       };
+    case DECRE:
+      return {
+        ...state,
+        count: state.count - 1
+      };
     default:
       return {
         ...state
@@ -22,23 +37,30 @@ function reducer(state = {}, { type, payload }) {
   }
 }
 
+// SECTION : create store, subscribe
 const store = createStore(reducer);
-
 store.subscribe(() => {
   console.log(store.getState());
 });
 
+
 function init(count = 0) {
-  store.dispatch(actionCreator(INIT, { count }));
+  store.dispatch(initAction({ count }));
 }
-
 function incre() {
-  store.dispatch(actionCreator(INCRE));
+  store.dispatch(increAction());
+}
+function decre() {
+  store.dispatch(decreAction());
 }
 
-init(); // 초기화
-store.dispatch({ type: "incre" }); // 하드 코딩
-store.dispatch({ type: INCRE }); // 변수 사용
-store.dispatch(actionCreator(INCRE)); // 액션 크리에이터 사용
-incre(); // 액션 함수
-init(10);
+// SECTION : dispatch
+store.dispatch(initAction({ count: 0 })); // count: 0
+store.dispatch(increAction()); // count: 1
+store.dispatch(increAction()); // count: 2
+store.dispatch(decreAction()); // count: 1
+init(); // count: 0
+incre(); // count: 1
+incre(); // count: 2
+init(10); // count: 10
+decre(); // count: 9

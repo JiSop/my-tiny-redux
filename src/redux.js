@@ -1,6 +1,8 @@
-export function createStore(reducer) {
-  let state;
+export function createStore(reducer, initialState) {
+  let state = initialState;
   const listeners = [];
+
+  const getState = () => ({ ...state });
 
   const subscribe = (subscriber, context = null) => {
     listeners.push({
@@ -20,18 +22,28 @@ export function createStore(reducer) {
     publish();
   };
 
-  const getState = () => ({ ...state });
 
   return {
+    getState,
     subscribe,
     dispatch,
-    getState,
   };
 }
 
-export function actionCreator(type, payload = {}) {
-  return {
-    type: type,
-    payload: { ...payload }
+export function createAction(type, payloadCreator) {
+  const actionCreator = (...arg) => {
+    const action = { type, payload: {} };
+    if (payloadCreator !== undefined) {
+      action.payload = payloadCreator(...arg);
+    }
+    return action;
   };
+  return actionCreator;
 }
+
+// export function actionCreator(type, payload = {}) {
+//   return {
+//     type: type,
+//     payload: { ...payload }
+//   };
+// }
