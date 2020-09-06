@@ -1,4 +1,4 @@
-import { createAction } from "./redux";
+import { createAction } from "./tiny-redux";
 
 // SECTION : Action Type
 const INIT = 'INIT';
@@ -11,7 +11,7 @@ export const increAction = createAction(INCRE);
 export const decreAction = createAction(DECRE);
 
 // SECTION : Reducer
-export function counterReducer(state = {}, { type, payload }) {
+export function counterReducer(state, { type, payload }) {
   switch (type) {
     case INIT:
       return {

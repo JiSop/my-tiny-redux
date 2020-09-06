@@ -1,4 +1,4 @@
-import { createStore } from "./redux";
+import { createStore } from "./tiny-redux";
 import { counterReducer } from './counterReducer';
 import { initAction, increAction, decreAction } from './counterReducer';
 
@@ -6,10 +6,17 @@ import { initAction, increAction, decreAction } from './counterReducer';
 const initialState = { count: 0 };
 
 const store = createStore(counterReducer, initialState);
+
 store.subscribe(() => {
   console.log(store.getState());
 });
 
+
+// SECTION : dispatch
+store.dispatch(increAction()); // count: 1
+store.dispatch(increAction()); // count: 2
+store.dispatch(initAction({ count: 10 })); // count: 10
+store.dispatch(decreAction()); // count: 9
 
 function init(count = 0) {
   store.dispatch(initAction({ count }));
@@ -20,12 +27,6 @@ function incre() {
 function decre() {
   store.dispatch(decreAction());
 }
-
-// SECTION : dispatch
-store.dispatch(increAction()); // count: 1
-store.dispatch(increAction()); // count: 2
-store.dispatch(initAction({ count: 10 })); // count: 10
-store.dispatch(decreAction()); // count: 9
 
 init(); // count: 0
 incre(); // count: 1
