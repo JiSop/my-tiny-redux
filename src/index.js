@@ -1,44 +1,11 @@
-import { createStore, createAction } from "./redux";
-
-
-
-// SECTION : Action Type
-const INIT = 'INIT';
-const INCRE = 'INCRE';
-const DECRE = 'DECRE';
-
-// SECTION : Action Creator
-const initAction = createAction(INIT, ({ count }) => ({ count }));
-const increAction = createAction(INCRE);
-const decreAction = createAction(DECRE);
-
-// SECTION : Reducer
-function reducer(state = {}, { type, payload }) {
-  switch (type) {
-    case INIT:
-      return {
-        ...state,
-        count: payload.count
-      };
-    case INCRE:
-      return {
-        ...state,
-        count: state.count + 1
-      };
-    case DECRE:
-      return {
-        ...state,
-        count: state.count - 1
-      };
-    default:
-      return {
-        ...state
-      };
-  }
-}
+import { createStore } from "./redux";
+import { counterReducer } from './counterReducer';
+import { initAction, increAction, decreAction } from './counterReducer';
 
 // SECTION : create store, subscribe
-const store = createStore(reducer);
+const initialState = { count: 0 };
+
+const store = createStore(counterReducer, initialState);
 store.subscribe(() => {
   console.log(store.getState());
 });
@@ -55,10 +22,11 @@ function decre() {
 }
 
 // SECTION : dispatch
-store.dispatch(initAction({ count: 0 })); // count: 0
 store.dispatch(increAction()); // count: 1
 store.dispatch(increAction()); // count: 2
-store.dispatch(decreAction()); // count: 1
+store.dispatch(initAction({ count: 10 })); // count: 10
+store.dispatch(decreAction()); // count: 9
+
 init(); // count: 0
 incre(); // count: 1
 incre(); // count: 2
