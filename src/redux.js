@@ -2,27 +2,36 @@ export function createStore(reducer) {
   let state;
   const listeners = [];
 
+  const subscribe = (subscriber, context = null) => {
+    listeners.push({
+      subscriber,
+      context
+    });
+  };
+
+  const publish = () => {
+    listeners.forEach(({ subscriber, context }) => {
+      subscriber.call(context);
+    });
+  };
+
+  const dispatch = action => {
+    state = reducer(state, action);
+    publish();
+  };
+
   const getState = () => ({ ...state });
 
-  const dispatch = (action) => {
-    state = reducer(state, action);
-    listeners.forEach((fn) => fn());
-  };
-
-  const subscribe = (fn) => {
-    listeners.push(fn);
-  };
-
   return {
-    getState,
+    subscribe,
     dispatch,
-    subscribe
+    getState,
   };
 }
 
-export function actionCreator(type, data) {
+export function actionCreator(type, payload = {}) {
   return {
-    ...data,
-    type: type
+    type: type,
+    payload: { ...payload }
   };
 }
