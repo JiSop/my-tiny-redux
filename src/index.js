@@ -2,15 +2,13 @@ import { createStore } from "./tiny-redux";
 import { counterReducer } from './counterReducer';
 import { initAction, increAction, decreAction } from './counterReducer';
 
-// SECTION : create store, subscribe
-const initialState = { count: 0 };
 
-const store = createStore(counterReducer, initialState);
+// SECTION : create store, subscribe
+const store = createStore(counterReducer);
 
 store.subscribe(() => {
   console.log(store.getState());
 });
-
 
 // SECTION : dispatch
 store.dispatch(increAction()); // count: 1
