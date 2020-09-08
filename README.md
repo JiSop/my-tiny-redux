@@ -4,7 +4,14 @@
 
 
 
-## 기본 개념
+```bash
+$ yarn install
+$ yarn start
+```
+
+
+
+## redux 기본 개념
 
 ### redux !== flux
 
@@ -66,9 +73,9 @@ export function createStore(reducer, initialState) {
   };
 }
 ```
-  
 
-  
+
+
 
 
 #### getState

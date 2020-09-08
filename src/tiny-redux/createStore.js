@@ -18,6 +18,7 @@ export function createStore(reducer, initialState) {
    * 현재 상태 반환
    */
   const getState = () => ({ ...state });
+  // const getState = () => state;
 
   /**
    * 변경사항에 대한 리스너 추가  
