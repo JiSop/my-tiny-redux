@@ -6,7 +6,7 @@
  * @param {*} initialState 
  *  - 초기 상태
  */
-export function createStore(reducer, initialState) {
+export function createStore(reducer, initialState, middlewares = []) {
 
   // 현재 상태
   let state = initialState;
@@ -44,9 +44,18 @@ export function createStore(reducer, initialState) {
     });
   };
 
-  return {
-    getState,
-    subscribe,
+  const store = {
     dispatch,
+    getState,
+    subscribe
   };
+
+  middlewares = Array.from(middlewares).reverse();
+  let lastDispatch = store.dispatch;
+
+  middlewares.forEach((middleware) => {
+    lastDispatch = middleware(store)(lastDispatch);
+  });
+
+  return { ...store, dispatch: lastDispatch }
 }

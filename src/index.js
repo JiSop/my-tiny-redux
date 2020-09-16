@@ -12,7 +12,18 @@ const ClearBtn = document.getElementById('clear');
 const initialState = {
   count: 0
 };
-const store = createStore(counterReducer, initialState);
+const logger = store => next => action => {
+  console.log("logger: ", action.type);
+  next(action);
+};
+const monitor = store => next => action => {
+  setTimeout(() => {
+    console.log("monitor: ", action.type);
+    next(action);
+  }, 2000);
+};
+
+const store = createStore(counterReducer, initialState, [logger, monitor]);
 
 // SECTION : Render, Subscribe
 const render = () => {
