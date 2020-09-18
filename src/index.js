@@ -1,6 +1,7 @@
 import { createStore } from "./tiny-redux";
 import { counterReducer } from './counterReducer';
 import { initAction, increAction, decreAction } from './counterReducer';
+import { logger, monitor } from './tiny-redux/middleware'
 
 // SECTION : DOM elements ref
 const Counter = document.getElementById('counter');
@@ -11,16 +12,6 @@ const ClearBtn = document.getElementById('clear');
 // SECTION : Initial state, Create store
 const initialState = {
   count: 0
-};
-const logger = store => next => action => {
-  console.log("logger: ", action.type);
-  next(action);
-};
-const monitor = store => next => action => {
-  setTimeout(() => {
-    console.log("monitor: ", action.type);
-    next(action);
-  }, 2000);
 };
 
 const store = createStore(counterReducer, initialState, [logger, monitor]);
